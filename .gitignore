@@ -23,6 +23,7 @@
 # Composer files
 composer.phar
 vendor/
+log
 
 # Local configs
 config/autoload/*.local.php
