@@ -14,6 +14,10 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
+    \Mezzio\Cors\ConfigProvider::class,
+    \Mezzio\LaminasView\ConfigProvider::class,
+    \Mezzio\Plates\ConfigProvider::class,
+    \Genxoft\SwaggerPhpModule\ConfigProvider::class,
     \Mezzio\Hal\ConfigProvider::class,
     \Laminas\Db\ConfigProvider::class,
     \Mezzio\Tooling\ConfigProvider::class,
@@ -36,6 +40,7 @@ $aggregator = new ConfigAggregator([
     //     },
 
     // My Modules
+    \Swagger\ConfigProvider::class,
     \People\ConfigProvider::class,
 
     // Load application config in a pre-defined order in such a way that local settings

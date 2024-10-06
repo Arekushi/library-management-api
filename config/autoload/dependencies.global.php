@@ -11,6 +11,8 @@ use Psr\Log\LoggerInterface;
 use Cycle\ORM\ORM;
 use Cycle\Database\DatabaseManager;
 use Cycle\Migrations\Migrator;
+use Mezzio\LaminasView\LaminasViewRendererFactory;
+use Mezzio\Template\TemplateRendererInterface;
 
 return [
     // Provides application-wide services.
@@ -35,13 +37,11 @@ return [
         // Use 'factories' for services provided by callbacks/factory classes.
         'factories' => [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
-            // 'doctrine.orm_default' => \Roave\PsrContainerDoctrine\EntityManagerFactory::class,
-            // EntityManager::class => LaminasDoctrineORM\Service\EntityManagerFactory::class,
-
             LoggerInterface::class => LoggerFactory::class,
             DatabaseManager::class => DatabaseManagerFactory::class,
             ORM::class => CycleORMFactory::class,
-            Migrator::class => MigratorFactory::class
+            Migrator::class => MigratorFactory::class,
+            TemplateRendererInterface::class => LaminasViewRendererFactory::class,
         ],
-    ],
+    ]
 ];

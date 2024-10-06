@@ -18,10 +18,11 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "composer/package-versions-deprecated": true,
-            "laminas/laminas-component-installer": true
+            "laminas/laminas-component-installer": true,
+            "laminas-api-tools/api-tools-asset-manager": true
         },
         "platform": {
-            "php": "8.3.12"
+            "php": "8.2.0"
         }
     },
     "extra": {
@@ -37,6 +38,7 @@
     },
     "require": {
         "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+        "arekushi/swagger-php-module": "dev-main",
         "composer/package-versions-deprecated": "^1.10.99",
         "cycle/annotated": "^4.2",
         "cycle/entity-behavior": "^1.3",
@@ -53,11 +55,14 @@
         "laminas/laminas-servicemanager": "^3.22",
         "laminas/laminas-stdlib": "^3.6",
         "mezzio/mezzio": "^3.7",
+        "mezzio/mezzio-cors": "^1.12",
         "mezzio/mezzio-fastroute": "^3.11.0",
         "mezzio/mezzio-hal": "^2.9",
         "mezzio/mezzio-helpers": "^5.7",
+        "mezzio/mezzio-laminasviewrenderer": "^2.15",
+        "mezzio/mezzio-platesrenderer": "^2.10",
         "monolog/monolog": "^3.7",
-        "roave/psr-container-doctrine": "^5.3",
+        "roave/psr-container-doctrine": "^5.2.0",
         "skar/php-cache": "^0.1.0",
         "spiral/tokenizer": "^3.14",
         "symfony/finder": "^7.1",
@@ -76,6 +81,7 @@
     "autoload": {
         "psr-4": {
             "People\\": "src/People/src",
+            "Swagger\\": "src/Swagger/src",
             "App\\": "src"
         }
     },

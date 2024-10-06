@@ -17,7 +17,8 @@ class PeopleHandler implements RequestHandlerInterface
 
     protected $peopleService;
 
-    public function __construct(PeopleService $peopleService) {
+    public function __construct(PeopleService $peopleService)
+    {
         $this->peopleService = $peopleService;
         $this->routes = [
             'people.get' => [$this, 'getPeople']
@@ -31,6 +32,32 @@ class PeopleHandler implements RequestHandlerInterface
         return call_user_func($this->routes[$routeName], $request);
     }
 
+    /**
+     * @OA\Get(path="/people/{id}",
+     *   summary="Obter informações de uma pessoa",
+     *   tags={"People"},
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(
+     *       type="string"
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Returns People object",
+     *     @OA\MediaType(
+     *         mediaType="application/json",
+     *         @OA\Schema(ref="#/components/schemas/People"),
+     *     ),
+     *   ),
+     *   @OA\Response(
+     *     response=404,
+     *     description="People not found"
+     *   )
+     * )
+     */
     public function getPeople(ServerRequestInterface $request)
     {
         $id = $request->getAttribute('id');
