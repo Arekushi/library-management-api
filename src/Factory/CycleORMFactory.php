@@ -29,7 +29,7 @@ class CycleORMFactory
         $registry = new Registry($dbal);
         $finder = new Finder();
         $files = $finder->files()->in(
-            [__DIR__ . '/../People/src/Model']
+            [__DIR__ . '/../Person/src/Model']
         );
         $classLocator = new ClassLocator($files);
         $embeddingLocator = new TokenizerEmbeddingLocator($classLocator);

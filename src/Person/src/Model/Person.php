@@ -1,31 +1,31 @@
 <?php
 
-namespace People\Model;
+namespace Person\Model;
 
 use App\Abstract\BasicModel;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
-use People\Repository\PeopleRepository;
+use Person\Repository\PersonRepository;
 
 /**
  *@OA\Schema(
- *  schema="People",
+ *  schema="Person",
  *  @OA\Property(
- *     property="userName",
+ *     property="name",
  *     type="string",
- *     description="Name of people"
+ *     description="Name of person"
  *  ),
  *  @OA\Property(
  *     property="email",
  *     type="string",
- *     description="Email of people"
+ *     description="Email of person"
  *  )
  *)
  */
-#[Entity(table: 'people', role: 'people', repository: PeopleRepository::class)]
-class People extends BasicModel {
+#[Entity(table: 'person', role: 'person', repository: PersonRepository::class)]
+class Person extends BasicModel {
     #[Column(type: "string", length: 255)]
-    protected $userName;
+    protected $name;
 
     #[Column(type: "string", length: 255)]
     protected $email;

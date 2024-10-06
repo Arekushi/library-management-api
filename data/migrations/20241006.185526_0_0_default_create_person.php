@@ -6,14 +6,14 @@ namespace Migration;
 
 use Cycle\Migrations\Migration;
 
-class OrmDefaultB440edf8ef0c5fb6f3ec701c9a3d689b extends Migration
+class OrmDefaultD4dcd9004b23f9657f85cc298ff73413 extends Migration
 {
     protected const DATABASE = 'default';
 
     public function up(): void
     {
-        $this->table('people')
-        ->addColumn('user_name', 'string', ['nullable' => false, 'defaultValue' => null, 'length' => 255, 'size' => 255])
+        $this->table('person')
+        ->addColumn('name', 'string', ['nullable' => false, 'defaultValue' => null, 'length' => 255, 'size' => 255])
         ->addColumn('email', 'string', ['nullable' => false, 'defaultValue' => null, 'length' => 255, 'size' => 255])
         ->addColumn('id', 'integer', ['nullable' => false, 'defaultValue' => null, 'autoincrement' => true])
         ->addColumn('created_at', 'datetime', ['nullable' => false, 'defaultValue' => null, 'withTimezone' => false])
@@ -24,6 +24,6 @@ class OrmDefaultB440edf8ef0c5fb6f3ec701c9a3d689b extends Migration
 
     public function down(): void
     {
-        $this->table('people')->drop();
+        $this->table('person')->drop();
     }
 }

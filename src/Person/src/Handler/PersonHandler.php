@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace People\Handler;
+namespace Person\Handler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use Mezzio\Router\RouteResult;
-use People\Service\PeopleService;
+use Person\Service\PersonService;
 
-class PeopleHandler implements RequestHandlerInterface
+class PersonHandler implements RequestHandlerInterface
 {
     protected $routes;
 
-    protected $peopleService;
+    protected $personService;
 
-    public function __construct(PeopleService $peopleService)
+    public function __construct(PersonService $personService)
     {
-        $this->peopleService = $peopleService;
+        $this->personService = $personService;
         $this->routes = [
-            'people.get' => [$this, 'getPeople']
+            'person.get' => [$this, 'getPerson']
         ];
     }
 
@@ -33,9 +33,9 @@ class PeopleHandler implements RequestHandlerInterface
     }
 
     /**
-     * @OA\Get(path="/people/{id}",
+     * @OA\Get(path="/person/{id}",
      *   summary="Obter informações de uma pessoa",
-     *   tags={"People"},
+     *   tags={"Person"},
      *   @OA\Parameter(
      *     name="id",
      *     in="path",
@@ -46,22 +46,22 @@ class PeopleHandler implements RequestHandlerInterface
      *   ),
      *   @OA\Response(
      *     response=200,
-     *     description="Returns People object",
+     *     description="Returns Person object",
      *     @OA\MediaType(
      *         mediaType="application/json",
-     *         @OA\Schema(ref="#/components/schemas/People"),
+     *         @OA\Schema(ref="#/components/schemas/Person"),
      *     ),
      *   ),
      *   @OA\Response(
      *     response=404,
-     *     description="People not found"
+     *     description="Person not found"
      *   )
      * )
      */
-    public function getPeople(ServerRequestInterface $request)
+    public function getPerson(ServerRequestInterface $request)
     {
         $id = $request->getAttribute('id');
-        $user = $this->peopleService->getUser($id);
+        $user = $this->personService->getUser($id);
 
         $message = 'sim';
 

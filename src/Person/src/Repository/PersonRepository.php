@@ -1,10 +1,10 @@
 <?php
 
-namespace People\Repository;
+namespace Person\Repository;
 
 use App\Abstract\BasicRepository;
 
-class PeopleRepository extends BasicRepository
+class PersonRepository extends BasicRepository
 {
     public function findById($id)
     {

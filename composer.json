@@ -80,14 +80,14 @@
     },
     "autoload": {
         "psr-4": {
-            "People\\": "src/People/src",
+            "Person\\": "src/Person/src",
             "Swagger\\": "src/Swagger/src",
             "App\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "PeopleTest\\": "src/People/test"
+            "PersonTest\\": "src/Person/test"
         }
     },
     "scripts": {

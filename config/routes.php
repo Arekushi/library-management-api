@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Laminas\Stdlib\Response;
 use Mezzio\Application;
 use Mezzio\MiddlewareFactory;
-use People\Repository\UserRepository;
+use Person\Repository\UserRepository;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

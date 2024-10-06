@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace People;
+namespace Person;
 
-use People\Factory\PeopleHandlerFactory;
-use People\Factory\PeopleServiceFactory;
-use People\Handler\PeopleHandler;
-use People\Service\PeopleService;
+use Person\Factory\PersonHandlerFactory;
+use Person\Factory\PersonServiceFactory;
+use Person\Handler\PersonHandler;
+use Person\Service\PersonService;
 
 class ConfigProvider
 {
@@ -23,8 +23,8 @@ class ConfigProvider
     {
         return [
             'factories' => [
-                PeopleService::class => PeopleServiceFactory::class,
-                PeopleHandler::class => PeopleHandlerFactory::class,
+                PersonService::class => PersonServiceFactory::class,
+                PersonHandler::class => PersonHandlerFactory::class,
             ],
         ];
     }
@@ -33,9 +33,9 @@ class ConfigProvider
     {
         return [
             [
-                'name' => 'people.get',
-                'path' => '/people/{id}',
-                'middleware' => PeopleHandler::class,
+                'name' => 'person.get',
+                'path' => '/person/{id}',
+                'middleware' => PersonHandler::class,
                 'allowed_methods' => ['GET'],
             ]
         ];

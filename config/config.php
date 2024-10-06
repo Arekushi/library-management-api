@@ -41,7 +41,7 @@ $aggregator = new ConfigAggregator([
 
     // My Modules
     \Swagger\ConfigProvider::class,
-    \People\ConfigProvider::class,
+    \Person\ConfigProvider::class,
 
     // Load application config in a pre-defined order in such a way that local settings
     // overwrite global settings. (Loaded as first to last):
