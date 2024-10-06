@@ -5,7 +5,9 @@ declare(strict_types=1);
 use App\Factory\CycleORMFactory;
 use App\Factory\DatabaseManagerFactory;
 use App\Factory\LoggerFactory;
+use App\Factory\LoggingMiddlewareFactory;
 use App\Factory\MigratorFactory;
+use App\Middleware\LoggingMiddleware;
 use Psr\Log\LoggerInterface;
 
 use Cycle\ORM\ORM;
@@ -38,6 +40,7 @@ return [
         'factories' => [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             LoggerInterface::class => LoggerFactory::class,
+            LoggingMiddleware::class => LoggingMiddlewareFactory::class,
             DatabaseManager::class => DatabaseManagerFactory::class,
             ORM::class => CycleORMFactory::class,
             Migrator::class => MigratorFactory::class,

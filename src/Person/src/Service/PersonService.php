@@ -2,7 +2,6 @@
 
 namespace Person\Service;
 
-use Person\Model\User;
 use Person\Repository\PersonRepository;
 
 class PersonService
@@ -14,13 +13,17 @@ class PersonService
         $this->personRepository = $personRepository;
     }
 
-    public function getUser($id)
+    public function getPerson($id)
     {
         return $this->personRepository->findById($id);
     }
 
-    public function getAllUsers()
+    public function getAllPersons()
     {
         return $this->personRepository->fetchAll();
+    }
+
+    public function createPerson($person) {
+        return $this->personRepository->createOne($person);
     }
 }

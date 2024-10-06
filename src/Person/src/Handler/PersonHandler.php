@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Person\Handler;
 
+use App\InputFilter\CreatePersonInputFilter;
+use Person\Request\CreatePersonRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use Mezzio\Router\RouteResult;
 use Person\Service\PersonService;
+use Symfony\Component\Validator\Validation;
 
 class PersonHandler implements RequestHandlerInterface
 {
@@ -21,7 +24,8 @@ class PersonHandler implements RequestHandlerInterface
     {
         $this->personService = $personService;
         $this->routes = [
-            'person.get' => [$this, 'getPerson']
+            'person.get' => [$this, 'getPerson'],
+            'person.create' => [$this, 'createPerson']
         ];
     }
 
@@ -61,7 +65,7 @@ class PersonHandler implements RequestHandlerInterface
     public function getPerson(ServerRequestInterface $request)
     {
         $id = $request->getAttribute('id');
-        $user = $this->personService->getUser($id);
+        $user = $this->personService->getPerson($id);
 
         $message = 'sim';
 
@@ -72,5 +76,25 @@ class PersonHandler implements RequestHandlerInterface
         return new JsonResponse(
             ['message' => $message]
         );
+    }
+
+    public function createPerson(ServerRequestInterface $request)
+    {
+        $data = $request->getParsedBody();
+        $person = new CreatePersonRequest($data['name'],  $data['email']);
+
+        $validator = Validation::createValidatorBuilder()
+            ->enableAttributeMapping()
+            ->getValidator();
+
+        $violations = $validator->validate($person);
+        $message = 'sim';
+
+        if (count($violations) > 0)
+        {
+            $message = 'nao';
+        }
+
+        return new JsonResponse(['message' => $message]);
     }
 }

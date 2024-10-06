@@ -37,6 +37,12 @@ class ConfigProvider
                 'path' => '/person/{id}',
                 'middleware' => PersonHandler::class,
                 'allowed_methods' => ['GET'],
+            ],
+            [
+                'name' => 'person.create',
+                'path' => '/person',
+                'middleware' => PersonHandler::class,
+                'allowed_methods' => ['POST']
             ]
         ];
     }

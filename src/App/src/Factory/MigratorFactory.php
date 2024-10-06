@@ -15,7 +15,7 @@ class MigratorFactory
     public function __invoke(ContainerInterface $container): Migrator
     {
         $config = new MigrationConfig([
-            'directory' => __DIR__ . '/../../data/migrations',
+            'directory' => __DIR__ . '/../../../../data/migrations',
             'table' => 'migrations',
         ]);
 
