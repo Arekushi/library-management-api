@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Handler\CustomNotFoundHandler;
+use App\Middleware\ExceptionHandlerMiddleware;
 use App\Middleware\LoggingMiddleware;
 use Laminas\Stratigility\Middleware\ErrorHandler;
 use Mezzio\Application;
@@ -25,7 +27,7 @@ use Psr\Container\ContainerInterface;
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     // The error handler should be the first (most outer) middleware to catch
     // all Exceptions.
-    $app->pipe(ErrorHandler::class);
+    $app->pipe(ExceptionHandlerMiddleware::class);
     $app->pipe(ServerUrlMiddleware::class);
 
     // CORS
@@ -85,5 +87,5 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // At this point, if no Response is returned by any middleware, the
     // NotFoundHandler kicks in; alternately, you can provide other fallback
     // middleware to execute.
-    $app->pipe(NotFoundHandler::class);
+    $app->pipe(CustomNotFoundHandler::class);
 };

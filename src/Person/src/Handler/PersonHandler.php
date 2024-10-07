@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Person\Handler;
 
+use App\Abstract\BasicHandler;
 use App\InputFilter\CreatePersonInputFilter;
 use Person\Request\CreatePersonRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -14,26 +15,22 @@ use Mezzio\Router\RouteResult;
 use Person\Service\PersonService;
 use Symfony\Component\Validator\Validation;
 
-class PersonHandler implements RequestHandlerInterface
+class PersonHandler extends BasicHandler
 {
-    protected $routes;
-
-    protected $personService;
+    // protected PersonService $service;
 
     public function __construct(PersonService $personService)
     {
-        $this->personService = $personService;
+        $this->service = $personService;
         $this->routes = [
-            'person.get' => [$this, 'getPerson'],
-            'person.create' => [$this, 'createPerson']
+            'person.get' => [
+                'callback' => [$this, 'get']
+            ],
+            'person.create' => [
+                'callback' => [$this, 'create'],
+                'requestClass' => CreatePersonRequest::class,
+            ]
         ];
-    }
-
-    public function handle(ServerRequestInterface $request): ResponseInterface
-    {
-        $routeResult = $request->getAttribute(RouteResult::class);
-        $routeName = $routeResult->getMatchedRouteName();
-        return call_user_func($this->routes[$routeName], $request);
     }
 
     /**
@@ -62,39 +59,40 @@ class PersonHandler implements RequestHandlerInterface
      *   )
      * )
      */
-    public function getPerson(ServerRequestInterface $request)
-    {
-        $id = $request->getAttribute('id');
-        $user = $this->personService->getPerson($id);
 
-        $message = 'sim';
+    // public function getPerson(ServerRequestInterface $request)
+    // {
+    //     $id = $request->getAttribute('id');
+    //     $user = $this->service->get($id);
 
-        if ($user == null) {
-            $message = 'nao';
-        }
+    //     $message = 'sim';
 
-        return new JsonResponse(
-            ['message' => $message]
-        );
-    }
+    //     if ($user == null) {
+    //         $message = 'nao';
+    //     }
 
-    public function createPerson(ServerRequestInterface $request)
-    {
-        $data = $request->getParsedBody();
-        $person = new CreatePersonRequest($data['name'],  $data['email']);
+    //     return new JsonResponse(
+    //         ['message' => $message]
+    //     );
+    // }
 
-        $validator = Validation::createValidatorBuilder()
-            ->enableAttributeMapping()
-            ->getValidator();
+    // public function createPerson(ServerRequestInterface $request)
+    // {
+    //     $data = $request->getParsedBody();
+    //     $person = new CreatePersonRequest($data['name'],  $data['email']);
 
-        $violations = $validator->validate($person);
-        $message = 'sim';
+    //     $validator = Validation::createValidatorBuilder()
+    //         ->enableAttributeMapping()
+    //         ->getValidator();
 
-        if (count($violations) > 0)
-        {
-            $message = 'nao';
-        }
+    //     $violations = $validator->validate($person);
+    //     $message = 'sim';
 
-        return new JsonResponse(['message' => $message]);
-    }
+    //     if (count($violations) > 0)
+    //     {
+    //         $message = 'nao';
+    //     }
+
+    //     return new JsonResponse(['message' => $message]);
+    // }
 }

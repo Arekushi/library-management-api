@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Psr\Log\LoggerInterface;
-
 // Delegate static file requests back to the PHP built-in webserver
 if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
     return false;
@@ -22,6 +20,9 @@ require 'vendor/autoload.php';
     /** @var \Mezzio\Application $app */
     $app = $container->get(\Mezzio\Application::class);
     $factory = $container->get(\Mezzio\MiddlewareFactory::class);
+
+    // Init AOP Kernel
+    App\AopFrameworkCore::init();
 
     // Execute programmatic/declarative middleware pipeline and routing
     // configuration statements

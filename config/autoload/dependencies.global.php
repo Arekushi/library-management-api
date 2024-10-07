@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
+use App\Factory\CustomNotFoundHandlerFactory;
 use App\Factory\CycleORMFactory;
 use App\Factory\DatabaseManagerFactory;
+use App\Factory\ExceptionHandlerMiddlewareFactory;
 use App\Factory\LoggerFactory;
 use App\Factory\LoggingMiddlewareFactory;
 use App\Factory\MigratorFactory;
+use App\Handler\CustomNotFoundHandler;
+use App\Middleware\ExceptionHandlerMiddleware;
 use App\Middleware\LoggingMiddleware;
 use Psr\Log\LoggerInterface;
 
@@ -45,6 +49,8 @@ return [
             ORM::class => CycleORMFactory::class,
             Migrator::class => MigratorFactory::class,
             TemplateRendererInterface::class => LaminasViewRendererFactory::class,
+            ExceptionHandlerMiddleware::class => ExceptionHandlerMiddlewareFactory::class,
+            CustomNotFoundHandler::class => CustomNotFoundHandlerFactory::class
         ],
     ]
 ];

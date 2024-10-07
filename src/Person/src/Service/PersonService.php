@@ -2,28 +2,15 @@
 
 namespace Person\Service;
 
+use App\Abstract\BasicService;
 use Person\Repository\PersonRepository;
 
-class PersonService
+class PersonService extends BasicService
 {
-    protected $personRepository;
+    // protected PersonRepository $repository;
 
-    public function __construct(PersonRepository $personRepository)
+    public function __construct(PersonRepository $repository)
     {
-        $this->personRepository = $personRepository;
-    }
-
-    public function getPerson($id)
-    {
-        return $this->personRepository->findById($id);
-    }
-
-    public function getAllPersons()
-    {
-        return $this->personRepository->fetchAll();
-    }
-
-    public function createPerson($person) {
-        return $this->personRepository->createOne($person);
+        $this->repository = $repository;
     }
 }
