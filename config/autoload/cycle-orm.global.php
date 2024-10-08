@@ -27,15 +27,6 @@ return [
                 ),
                 schema: 'public',
                 queryCache: true,
-            ),
-            'mysql' => new Config\MySQLDriverConfig(
-                connection: new Config\MySQL\TcpConnectionConfig(
-                    database: $_ENV['DB_DATABASE'],
-                    host: $_ENV['DB_HOST'],
-                    port: $_ENV['DB_PORT'],
-                    user: $_ENV['DB_USERNAME'],
-                    password: $_ENV['DB_PASSWORD'],
-                ),
             )
         ],
     ],

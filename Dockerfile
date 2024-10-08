@@ -76,5 +76,6 @@ RUN apt-get install --yes libpq-dev \
 #     && pecl install redis \
 #     && docker-php-ext-enable redis
 
+USER www-data
 
 WORKDIR /var/www
