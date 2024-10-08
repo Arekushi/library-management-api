@@ -7,7 +7,7 @@ use Cycle\Schema\Definition\Entity;
 use Cycle\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-abstract class BasicRepository extends Repository
+abstract class BaseRepository extends Repository
 {
 
     protected EntityManagerInterface $entityManager;

@@ -2,7 +2,7 @@
 
 namespace Person\Model;
 
-use App\Abstract\BasicModel;
+use App\Abstract\BaseModel;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Cycle\ORM\Entity\Behavior\Hook;
@@ -16,15 +16,15 @@ use OpenApi\Attributes as OAT;
     repository: PersonRepository::class
 )]
 #[Hook(
-    callable: [BasicModel::class, 'onCreate'],
+    callable: [BaseModel::class, 'onCreate'],
     events: Command\OnCreate::class
 )]
 #[Hook(
-    callable: [BasicModel::class, 'onUpdate'],
+    callable: [BaseModel::class, 'onUpdate'],
     events: Command\OnUpdate::class
 )]
 #[OAT\Schema(schema: 'Person')]
-class Person extends BasicModel
+class Person extends BaseModel
 {
     #[OAT\Property(type: 'string')]
     #[Column(type: "string", length: 255)]

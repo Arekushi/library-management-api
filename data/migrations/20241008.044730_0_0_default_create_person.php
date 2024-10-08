@@ -6,7 +6,7 @@ namespace Migration;
 
 use Cycle\Migrations\Migration;
 
-class OrmDefaultF65ad6e742006ff9b4f1094c7ab82c41 extends Migration
+class OrmDefault0bccc067543e092b46ccc8535a41c803 extends Migration
 {
     protected const DATABASE = 'default';
 

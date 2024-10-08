@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b26c11328afe30f04aded5c6984757e5",
+    "content-hash": "51cfed1345fb0e3648b774494a36167f",
     "packages": [
         {
             "name": "arekushi/cycle-orm-factory",
@@ -5284,58 +5284,6 @@
                 "source": "https://github.com/Roave/Signature/tree/1.8.0"
             },
             "time": "2023-11-25T00:11:29+00:00"
-        },
-        {
-            "name": "skar/php-cache",
-            "version": "0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/skar/php-cache.git",
-                "reference": "3f2e8650d31a0ec451a1c812ba1ad70678927055"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/skar/php-cache/zipball/3f2e8650d31a0ec451a1c812ba1ad70678927055",
-                "reference": "3f2e8650d31a0ec451a1c812ba1ad70678927055",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.1 || ^8.2 || ^8.3",
-                "psr/cache": "^3.0"
-            },
-            "provide": {
-                "psr/cache-implementation": "3.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.5 || ^9.0 || ^10.0",
-                "predis/predis": "^1.1 || ^2.0"
-            },
-            "suggest": {
-                "predis/predis": "For Predis cache"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Skar\\Cache\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Skar",
-                    "email": "sskarr@gmail.com",
-                    "homepage": "https://github.com/skar"
-                }
-            ],
-            "description": "PSR-6 Cache Library",
-            "support": {
-                "issues": "https://github.com/skar/php-cache/issues",
-                "source": "https://github.com/skar/php-cache/tree/0.1"
-            },
-            "time": "2024-01-27T21:36:53+00:00"
         },
         {
             "name": "spiral/attributes",

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Abstract;
 
 use App\Aspect\JsonBodyValidatorAspect;
+use App\Class\Route;
 use App\Response\DeletedSuccessfullyResponse;
+use App\Utils\GenericMapper;
 use App\Utils\HydratorMapper;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -14,12 +16,14 @@ use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Hydrator\ClassMethodsHydrator;
 use Mezzio\Router\RouteResult;
 
-abstract class BasicHandler implements RequestHandlerInterface
+abstract class BaseHandler implements RequestHandlerInterface
 {
     /**
-     * @var array<string, array {
-     *     method: callable,
-     *     requestClass?: class-string
+     * @var array<string, array{
+     *     callback: callable,                  // A callback function to handle the route
+     *     requestClass?: class-string|null,    // Optional: The class name for the request data structure
+     *     responseClass?: class-string|null,   // Optional: The class name for the response data structure
+     *     responseStatus?: int                 // Optional: The HTTP status code to return (default is 200)
      * }>
      */
     protected $routes;
@@ -30,75 +34,70 @@ abstract class BasicHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $route = $this->getRoute($request);
-        return call_user_func($route['callback'], $request);
+
+        return new JsonResponse(
+            call_user_func($route->getCallback(), $route, $request),
+            $route->getResponseStatus()
+        );
     }
 
-    public function get(ServerRequestInterface $request)
+    public function get(Route $route, ServerRequestInterface $request)
     {
-        $route = $this->getRoute($request);
         $id = $request->getAttribute('id');
         $obj = $this->service->getById($id);
 
-        $responseClass = $route['responseClass'];
+        $responseClass = $route->getResponseClass();
         $response = HydratorMapper::map($obj, $responseClass);
-        return new JsonResponse($response);
+        return $response;
     }
 
-    public function list(ServerRequestInterface $request)
+    public function list(Route $route, ServerRequestInterface $request)
     {
-        $route = $this->getRoute($request);
         $objs = $this->service->getAll();
-        $responseClass = $route['responseClass'];
+        $responseClass = $route->getResponseClass();
 
         $response = HydratorMapper::mapList($objs, $responseClass);
-        return new JsonResponse($response);
+        return $response;
     }
 
-    public function create(ServerRequestInterface $request)
+    public function create(Route $route, ServerRequestInterface $request)
     {
-        $route = $this->getRoute($request);
         $data = $request->getParsedBody();
-        $requestClass = $route['requestClass'];
+        $requestClass = $route->getRequestClass();
         $request = HydratorMapper::map($data, $requestClass);
 
         $obj = $this->service->create($request);
 
-        $responseClass = $route['responseClass'];
+        $responseClass = $route->getResponseClass();
         $response = HydratorMapper::map($obj, $responseClass);
-        return new JsonResponse($response);
+        return $response;
     }
 
-    public function delete(ServerRequestInterface $request)
+    public function delete(Route $route, ServerRequestInterface $request)
     {
         $id = $request->getAttribute('id');
         $this->service->delete($id);
 
-        return new JsonResponse(new DeletedSuccessfullyResponse());
+        return new DeletedSuccessfullyResponse();
     }
 
-    public function edit(ServerRequestInterface $request)
+    public function edit(Route $route, ServerRequestInterface $request)
     {
-        $route = $this->getRoute($request);
         $id = $request->getAttribute('id');
         $data = $request->getParsedBody();
-        $requestClass = $route['requestClass'];
+        $requestClass = $route->getRequestClass();
         $request = HydratorMapper::map($data, $requestClass);
 
         $obj = $this->service->edit($id, $data);
-        $responseClass = $route['responseClass'];
+        $responseClass = $route->getResponseClass();
         $response = HydratorMapper::map($obj, $responseClass);
-        return new JsonResponse($response);
+        return $response;
     }
 
-    public function getRoutes()
-    {
-        return $this->routes;
-    }
-
-    public function getRoute($request)
+    public function getRoute($request): Route
     {
         $routeResult = $request->getAttribute(RouteResult::class);
         $routeName = $routeResult->getMatchedRouteName();
-        return $this->routes[$routeName];
+        return GenericMapper::map($this->routes[$routeName], Route::class);
     }
 }

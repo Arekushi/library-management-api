@@ -2,8 +2,8 @@
 
 namespace Person\Repository;
 
-use App\Abstract\BasicRepository;
+use App\Abstract\BaseRepository;
 
-class PersonRepository extends BasicRepository
+class PersonRepository extends BaseRepository
 {
 }

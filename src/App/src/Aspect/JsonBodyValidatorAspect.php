@@ -2,7 +2,7 @@
 
 namespace App\Aspect;
 
-use App\Abstract\BasicHandler;
+use App\Abstract\BaseHandler;
 use App\Exception\InvalidJsonBodyException;
 use App\Utils\HydratorMapper;
 use Attribute;
@@ -20,15 +20,15 @@ class JsonBodyValidatorAspect
     #[Before]
     public function validate(BeforeMethodInvocation $invocation)
     {
-        /** @var BasicHandler $subject */
+        /** @var BaseHandler $subject */
         $subject = $invocation->getSubject();
         $request = $invocation->getArgument(0);
 
         $route = $subject->getRoute($request);
 
-        if (isset($route['requestClass']) && $route['requestClass'] !== null)
+        if ($route->getRequestClass() !== null)
         {
-            $requestClass = $route['requestClass'];
+            $requestClass = $route->getRequestClass();
             $data = $request->getParsedBody();
             $request = HydratorMapper::map($data, $requestClass);
 

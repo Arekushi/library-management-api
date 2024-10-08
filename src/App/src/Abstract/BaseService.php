@@ -6,9 +6,9 @@ use App\Exception\NotFoundException;
 use App\Utils\HydratorMapper;
 use Laminas\Hydrator\ClassMethodsHydrator;
 
-abstract class BasicService
+abstract class BaseService
 {
-    protected BasicRepository $repository;
+    protected BaseRepository $repository;
 
     public function getById($id)
     {

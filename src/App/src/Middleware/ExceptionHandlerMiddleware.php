@@ -2,6 +2,7 @@
 
 namespace App\Middleware;
 
+use App\Response\ExceptionResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -35,17 +36,16 @@ class ExceptionHandlerMiddleware implements MiddlewareInterface
         $statusCode = $e->getStatusCode();
         $response = $this->responseFactory->createResponse($statusCode);
 
-        $jsonData = [
-            'message' => $e->getMessage(),
-            'code' => $statusCode,
-        ];
+        $exceptionResponse = new ExceptionResponse(
+            $e->getMessage(),
+            $statusCode,
+            $e->getError()
+        );
 
-        $error = $e->getError();
-        if ($error !== null) {
-            $jsonData['error'] = $error;
-        }
+        $response->getBody()->write(
+            json_encode((object) array_filter((array) $exceptionResponse))
+        );
 
-        $response->getBody()->write(json_encode($jsonData));
         return $response->withHeader('Content-Type', 'application/json');
     }
 

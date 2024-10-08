@@ -8,6 +8,9 @@ use OpenApi\Attributes as OAT;
 class GetPersonResponse
 {
     #[OAT\Property(type: 'string')]
+    public string $uuid;
+
+    #[OAT\Property(type: 'string')]
     public string $name;
 
     #[OAT\Property(type: 'string')]

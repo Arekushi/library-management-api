@@ -9,7 +9,7 @@ use ReflectionClass;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
-abstract class BasicModel
+abstract class BaseModel
 {
     #[Column(type: 'string', primary: true)]
     protected string $uuid;
@@ -66,6 +66,6 @@ abstract class BasicModel
             }
         }
 
-        return implode(", ", $output);
+        return implode(', ', $output);
     }
 }
