@@ -10,13 +10,13 @@ use Person\Model\Telephone;
 #[OAT\Schema(schema: 'CreatePersonRequest')]
 class CreatePersonRequest
 {
-    #[Assert\NotBlank(message: "O nome não pode estar vazio")]
-    #[Assert\Length(min: 3, minMessage: "O nome deve ter pelo menos 3 caracteres")]
+    #[Assert\NotBlank(message: "The name cannot be empty.")]
+    #[Assert\Length(min: 3, minMessage: "The name must be at least 3 characters long.")]
     #[OAT\Property(type: 'string')]
     public string $name;
 
-    #[Assert\NotBlank(message: "O email não pode estar vazio")]
-    #[Assert\Email(message: "O email '{{ value }}' não é um email válido")]
+    #[Assert\NotBlank(message: "The email cannot be empty.")]
+    #[Assert\Email(message: "The email '{{ value }}' is not a valid email address.")]
     #[OAT\Property(type: 'string')]
     public string $email;
 

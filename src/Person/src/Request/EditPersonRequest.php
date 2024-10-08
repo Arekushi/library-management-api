@@ -10,11 +10,11 @@ use Person\Model\Telephone;
 #[OAT\Schema(schema: 'EditPersonRequest')]
 class EditPersonRequest
 {
-    #[Assert\Length(min: 3, minMessage: "O nome deve ter pelo menos 3 caracteres")]
+    #[Assert\Length(min: 3, minMessage: "The name must be at least 3 characters long.")]
     #[OAT\Property(type: 'string')]
     public ?string $name = null;
 
-    #[Assert\Email(message: "O email '{{ value }}' não é um email válido")]
+    #[Assert\Email(message: "The email '{{ value }}' is not a valid email address.")]
     #[OAT\Property(type: 'string')]
     public ?string $email = null;
 

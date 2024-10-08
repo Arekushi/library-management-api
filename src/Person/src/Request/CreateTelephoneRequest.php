@@ -8,8 +8,8 @@ use OpenApi\Attributes as OAT;
 #[OAT\Schema(schema: 'CreateTelephoneRequest')]
 class CreateTelephoneRequest
 {
-    #[Assert\NotBlank(message: "O telephone não pode estar vazio")]
-    #[Assert\Length(min: 3, minMessage: "O telephone deve ter pelo menos 3 caracteres")]
+    #[Assert\NotBlank(message: "The telephone number cannot be empty.")]
+    #[Assert\Length(min: 3, minMessage: "The telephone number must be at least 3 characters long.")]
     #[OAT\Property(type: 'string')]
     public string $number;
 }
