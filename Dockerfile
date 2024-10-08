@@ -1,4 +1,4 @@
-FROM php:8.3-apache
+FROM php:8.2-apache
 
 LABEL maintainer="getlaminas.org" \
     org.label-schema.docker.dockerfile="/Dockerfile" \
@@ -76,6 +76,10 @@ RUN apt-get install --yes libpq-dev \
 #     && pecl install redis \
 #     && docker-php-ext-enable redis
 
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
 USER www-data
 
 WORKDIR /var/www
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

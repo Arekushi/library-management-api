@@ -48,3 +48,6 @@ extras/documentation
 
 # Cache
 cache
+
+# Composer
+.composer
