@@ -11,6 +11,7 @@ use Library\Repository\BookRepository;
 use Library\Repository\LoanRepository;
 use Library\Request\CreateLoanRequest;
 use Library\Request\ReturnBookRequest;
+use Person\Model\Person;
 use Person\Repository\PersonRepository;
 
 class LoanService extends BaseService
@@ -25,14 +26,27 @@ class LoanService extends BaseService
         LoanRepository $repository,
         BookRepository $bookRepository,
         PersonRepository $personRepository
-    )
-    {
+    ) {
         $this->repository = $repository;
         $this->loanRepository = $repository;
         $this->bookRepository = $bookRepository;
         $this->personRepository = $personRepository;
     }
 
+    /**
+     * Creates a new loan record for a specified book and person.
+     *
+     * This method checks the availability of the specified book and the existence
+     * of the person before creating a loan. It throws exceptions if the book or person
+     * cannot be found, or if there are no copies of the book available.
+     *
+     * @param CreateLoanRequest $request The request object containing the loan details.
+     *
+     * @return Loan The created loan entity.
+     *
+     * @throws NotFoundException If the specified book or person is not found.
+     * @throws HttpException If there are no more copies of the book available.
+     */
     public function create($request)
     {
         $bookId = $request->bookId;
@@ -53,6 +67,7 @@ class LoanService extends BaseService
             );
         }
 
+        /** @var Person $person */
         $person = $this->personRepository->getById($personId);
 
         if ($person == null) {
@@ -69,6 +84,19 @@ class LoanService extends BaseService
         return $this->repository->createOne($loan);
     }
 
+    /**
+     * Processes the return of a loaned book.
+     *
+     * This method retrieves the loan record associated with the specified person and book.
+     * It updates the loan record to set the return date and increments the book's available copies.
+     * If no matching loan is found, a NotFoundException is thrown.
+     *
+     * @param ReturnBookRequest $request The request object containing the person and book identifiers.
+     *
+     * @return bool True if the book was returned on time, false if it was late.
+     *
+     * @throws NotFoundException If the loan cannot be found for the specified person and book.
+     */
     public function returnBook(ReturnBookRequest $request)
     {
         /** @var Loan $loan */
