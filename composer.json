@@ -79,6 +79,7 @@
     "autoload": {
         "psr-4": {
             "Person\\": "src/Person/src",
+            "Library\\": "src/Library/src",
             "Swagger\\": "src/Swagger/src",
             "App\\": "src/App/src"
         }

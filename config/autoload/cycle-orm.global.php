@@ -44,7 +44,8 @@ return [
         'table' => 'migrations'
     ],
     'entities' => [
-        (__DIR__ . '/../../src/Person/src/Model')
+        (__DIR__ . '/../../src/Person/src/Model'),
+        (__DIR__ . '/../../src/Library/src/Model')
     ],
     'schema' => [
         'property' => SchemaProperty::GenerateMigrations,
