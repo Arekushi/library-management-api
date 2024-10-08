@@ -4,7 +4,6 @@ namespace App\Aspect;
 
 use App\Abstract\BaseHandler;
 use App\Exception\InvalidJsonBodyException;
-use App\Utils\HydratorMapper;
 use Attribute;
 use Okapi\Aop\Invocation\BeforeMethodInvocation;
 use Okapi\Aop\Attributes\Aspect;
@@ -30,7 +29,8 @@ class JsonBodyValidatorAspect
         {
             $requestClass = $route->getRequestClass();
             $data = $request->getParsedBody();
-            $request = HydratorMapper::map($data, $requestClass);
+            $mapper = $subject->getMapper();
+            $request = $mapper->map($data, $requestClass);
 
             $validator = Validation::createValidatorBuilder()
                 ->enableAttributeMapping()

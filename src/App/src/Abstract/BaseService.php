@@ -3,13 +3,25 @@
 namespace App\Abstract;
 
 use App\Exception\NotFoundException;
-use App\Utils\HydratorMapper;
 use App\Utils\Merger;
+use AutoMapperPlus\AutoMapper;
 use Laminas\Hydrator\ClassMethodsHydrator;
 
 abstract class BaseService
 {
     protected BaseRepository $repository;
+
+    protected AutoMapper $mapper;
+
+    public function getMapper()
+    {
+        return $this->mapper;
+    }
+
+    public function setMapper($mapper)
+    {
+        $this->mapper = $mapper;
+    }
 
     public function getById($id)
     {
@@ -30,12 +42,7 @@ abstract class BaseService
 
     public function create($request)
     {
-        $obj = HydratorMapper::map(
-            $request,
-            $this->repository->getEntityClass(),
-            ClassMethodsHydrator::class
-        );
-
+        $obj = $this->mapper->map($request, $this->repository->getEntityClass());
         return $this->repository->createOne($obj);
     }
 
@@ -64,6 +71,7 @@ abstract class BaseService
         $newObj = Merger::merge(
             $oldObj,
             $request,
+            mapper: $this->mapper,
             ignoreProperties: ['uuid'],
             replace: $replace
         );

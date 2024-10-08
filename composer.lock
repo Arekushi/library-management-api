@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51cfed1345fb0e3648b774494a36167f",
+    "content-hash": "277785fc51443de5b5eb4d8557cceb51",
     "packages": [
         {
             "name": "arekushi/cycle-orm-factory",
@@ -2820,6 +2820,57 @@
                 "source": "https://github.com/thephpleague/plates/tree/v3.5.0"
             },
             "time": "2023-01-16T20:25:45+00:00"
+        },
+        {
+            "name": "mark-gerarts/auto-mapper-plus",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mark-gerarts/automapper-plus.git",
+                "reference": "2c14575a51377c31f4efea48f89f3fe0530b499a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mark-gerarts/automapper-plus/zipball/2c14575a51377c31f4efea48f89f3fe0530b499a",
+                "reference": "2c14575a51377c31f4efea48f89f3fe0530b499a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.0"
+            },
+            "require-dev": {
+                "mark-gerarts/phpstan-automapper-plus": "^0.1.0",
+                "phpunit/phpunit": "^7.0|^8.0",
+                "symfony/debug": "^3.3",
+                "symfony/var-dumper": "^3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AutoMapperPlus\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Gerarts",
+                    "email": "mark.gerarts@gmail.com"
+                }
+            ],
+            "description": "An AutoMapper for PHP",
+            "keywords": [
+                "automapper",
+                "converter",
+                "object-to-object"
+            ],
+            "support": {
+                "issues": "https://github.com/mark-gerarts/automapper-plus/issues",
+                "source": "https://github.com/mark-gerarts/automapper-plus/tree/1.4.1"
+            },
+            "time": "2023-01-31T08:07:09+00:00"
         },
         {
             "name": "mezzio/mezzio",

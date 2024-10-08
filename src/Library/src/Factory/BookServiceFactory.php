@@ -2,6 +2,7 @@
 
 namespace Library\Factory;
 
+use AutoMapperPlus\AutoMapper;
 use Cycle\ORM\EntityManager;
 use Cycle\ORM\ORM;
 use Library\Model\Book;
@@ -17,6 +18,8 @@ class BookServiceFactory
         /** @var ORM $orm */
         $orm = $container->get('orm');
 
+        $mapper = $container->get(AutoMapper::class);
+
         /** @var BookRepository $bookRepository */
         $bookRepository = $orm->getRepository(Book::class);
 
@@ -24,6 +27,9 @@ class BookServiceFactory
         $bookRepository->setEntityClass(Book::class);
         $bookRepository->logger = $container->get(LoggerInterface::class);
 
-        return new BookService($bookRepository);
+        $bookService = new BookService($bookRepository);
+        $bookService->setMapper($mapper);
+
+        return $bookService;
     }
 }

@@ -52,6 +52,7 @@
         "laminas/laminas-servicemanager": "^3.22",
         "laminas/laminas-stdlib": "^3.6",
         "laminas/laminas-validator": "^2.64",
+        "mark-gerarts/auto-mapper-plus": "^1.4",
         "mezzio/mezzio": "^3.7",
         "mezzio/mezzio-cors": "^1.12",
         "mezzio/mezzio-fastroute": "^3.11.0",

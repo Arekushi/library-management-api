@@ -7,8 +7,7 @@ namespace App\Abstract;
 use App\Aspect\JsonBodyValidatorAspect;
 use App\Class\Route;
 use App\Response\DeletedSuccessfullyResponse;
-use App\Utils\GenericMapper;
-use App\Utils\HydratorMapper;
+use AutoMapperPlus\AutoMapper;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -30,6 +29,8 @@ abstract class BaseHandler implements RequestHandlerInterface
 
     protected $service;
 
+    protected AutoMapper $mapper;
+
     #[JsonBodyValidatorAspect()]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -47,7 +48,7 @@ abstract class BaseHandler implements RequestHandlerInterface
         $obj = $this->service->getById($id);
 
         $responseClass = $route->getResponseClass();
-        $response = HydratorMapper::map($obj, $responseClass);
+        $response = $this->mapper->map($obj, $responseClass);
         return $response;
     }
 
@@ -56,7 +57,7 @@ abstract class BaseHandler implements RequestHandlerInterface
         $objs = $this->service->getAll();
         $responseClass = $route->getResponseClass();
 
-        $response = HydratorMapper::mapList($objs, $responseClass);
+        $response = $this->mapper->mapMultiple($objs, $responseClass);
         return $response;
     }
 
@@ -64,12 +65,12 @@ abstract class BaseHandler implements RequestHandlerInterface
     {
         $data = $request->getParsedBody();
         $requestClass = $route->getRequestClass();
-        $request = HydratorMapper::map($data, $requestClass);
+        $request = $this->mapper->map($data, $requestClass);
 
         $obj = $this->service->create($request);
 
         $responseClass = $route->getResponseClass();
-        $response = HydratorMapper::map($obj, $responseClass);
+        $response = $this->mapper->map($obj, $responseClass);
         return $response;
     }
 
@@ -86,11 +87,11 @@ abstract class BaseHandler implements RequestHandlerInterface
         $id = $request->getAttribute('id');
         $data = $request->getParsedBody();
         $requestClass = $route->getRequestClass();
-        $request = HydratorMapper::map($data, $requestClass);
+        $request = $this->mapper->map($data, $requestClass);
 
         $obj = $this->service->edit($id, $data, true);
         $responseClass = $route->getResponseClass();
-        $response = HydratorMapper::map($obj, $responseClass);
+        $response = $this->mapper->map($obj, $responseClass);
         return $response;
     }
 
@@ -99,18 +100,31 @@ abstract class BaseHandler implements RequestHandlerInterface
         $id = $request->getAttribute('id');
         $data = $request->getParsedBody();
         $requestClass = $route->getRequestClass();
-        $request = HydratorMapper::map($data, $requestClass);
+        $request = $this->mapper->map($data, $requestClass);
 
         $obj = $this->service->edit($id, $data);
         $responseClass = $route->getResponseClass();
-        $response = HydratorMapper::map($obj, $responseClass);
+        $response = $this->mapper->map($obj, $responseClass);
         return $response;
+    }
+
+    public function getMapper()
+    {
+        return $this->mapper;
+    }
+
+    public function setMapper($mapper)
+    {
+        $this->mapper = $mapper;
     }
 
     public function getRoute($request): Route
     {
         $routeResult = $request->getAttribute(RouteResult::class);
         $routeName = $routeResult->getMatchedRouteName();
-        return GenericMapper::map($this->routes[$routeName], Route::class);
+        /** @var Route $route */
+        $route = $this->mapper->map($this->routes[$routeName], Route::class);
+
+        return $route;
     }
 }

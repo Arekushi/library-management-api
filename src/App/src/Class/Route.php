@@ -12,32 +12,35 @@ class Route
 
     private ?int $responseStatus;
 
-    public function __construct(
-        $callback,
-        ?string $requestClass = null,
-        ?string $responseClass = null,
-        ?int $responseStatus = 200
-    )
-    {
+    public function getCallback() {
+        return $this->callback;
+    }
+
+    public function setCallback($callback) {
         $this->callback = $callback;
-        $this->requestClass = $requestClass;
-        $this->responseClass = $responseClass;
-        $this->responseStatus = $responseStatus;
-    }
-
-    public function getResponseStatus(): ?int {
-        return $this->responseStatus;
-    }
-
-    public function getResponseClass(): ?string {
-        return $this->responseClass;
     }
 
     public function getRequestClass(): ?string {
         return $this->requestClass;
     }
 
-    public function getCallback() {
-        return $this->callback;
+    public function setRequestClass(?string $requestClass) {
+        $this->requestClass = $requestClass;
+    }
+
+    public function getResponseClass(): ?string {
+        return $this->responseClass;
+    }
+
+    public function setResponseClass(?string $responseClass) {
+        $this->responseClass = $responseClass;
+    }
+
+    public function getResponseStatus(): ?int {
+        return $this->responseStatus;
+    }
+
+    public function setResponseStatus(?int $responseStatus = 200) {
+        $this->responseStatus = $responseStatus;
     }
 }

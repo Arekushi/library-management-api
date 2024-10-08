@@ -3,9 +3,7 @@
 namespace App\Utils;
 
 use App\Attribute\RelatedCollection;
-use Exception;
-use Laminas\Hydrator\ClassMethodsHydrator;
-use Laminas\Hydrator\HydratorInterface;
+use AutoMapperPlus\AutoMapper;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -14,6 +12,7 @@ class Merger
     public static function merge(
         $oldObj,
         $request,
+        AutoMapper $mapper,
         array $ignoreProperties = [],
         bool $overwriteFalsy = false,
         bool $replace = false
@@ -43,7 +42,7 @@ class Merger
 
                         foreach ($value as $newItemData) {
                             $relatedClass = $relatedCollectionAttr->getRelatedClass();
-                            $newItem = HydratorMapper::map($newItemData, $relatedClass, ClassMethodsHydrator::class);
+                            $newItem = $mapper->map($newItemData, $relatedClass);
                             $itens = $oldObj->{$getMethod}();
                             $itens[] = $newItem;
 

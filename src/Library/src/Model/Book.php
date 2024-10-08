@@ -3,8 +3,10 @@
 namespace Library\Model;
 
 use App\Abstract\BaseModel;
+use App\Attribute\RelatedCollection;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Relation\HasMany;
 use Cycle\ORM\Entity\Behavior\Hook;
 use Cycle\ORM\Entity\Behavior\Event\Mapper\Command;
 use Library\Repository\BookRepository;
@@ -50,6 +52,13 @@ class Book extends BaseModel
     #[Column(type: 'int')]
     protected $publicationYear;
 
+    #[OAT\Property(type: 'array', items: new OAT\Items(ref: '#/components/schemas/Loan'))]
+    #[HasMany(target: Loan::class)]
+    #[RelatedCollection(
+        Loan::class
+    )]
+    protected array $loans = [];
+
     public function getPublicationYear()
     {
         return $this->publicationYear;
@@ -70,6 +79,16 @@ class Book extends BaseModel
     {
         $this->copies = $copies;
         return $this;
+    }
+
+    public function minusOneCopy()
+    {
+        $this->copies -= 1;
+    }
+
+    public function plusOneCopy()
+    {
+        $this->copies += 1;
     }
 
     public function getPublisher()
@@ -114,5 +133,15 @@ class Book extends BaseModel
     {
         $this->title = $title;
         return $this;
+    }
+
+    public function getLoans(): array
+    {
+        return $this->loans;
+    }
+
+    public function setLoans(array $loans)
+    {
+        $this->loans = $loans;
     }
 }

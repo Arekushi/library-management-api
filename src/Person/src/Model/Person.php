@@ -10,6 +10,7 @@ use Cycle\Annotated\Annotation\Relation\HasMany;
 use Cycle\ORM\Entity\Behavior\Hook;
 use Person\Repository\PersonRepository;
 use Cycle\ORM\Entity\Behavior\Event\Mapper\Command;
+use Library\Model\Loan;
 use OpenApi\Attributes as OAT;
 
 #[Entity(
@@ -30,11 +31,11 @@ class Person extends BaseModel
 {
     #[OAT\Property(type: 'string')]
     #[Column(type: "string", length: 255)]
-    protected $name;
+    protected string $name;
 
     #[OAT\Property(type: 'string')]
     #[Column(type: "string", length: 255)]
-    protected $email;
+    protected string $email;
 
     #[OAT\Property(type: 'array', items: new OAT\Items(ref: '#/components/schemas/Telephone'))]
     #[HasMany(target: Telephone::class)]
@@ -42,6 +43,13 @@ class Person extends BaseModel
         Telephone::class
     )]
     protected array $telephones = [];
+
+    #[OAT\Property(type: 'array', items: new OAT\Items(ref: '#/components/schemas/Loan'))]
+    #[HasMany(target: Loan::class)]
+    #[RelatedCollection(
+        Loan::class
+    )]
+    protected array $loans = [];
 
     public function getName(): string
     {
@@ -71,5 +79,15 @@ class Person extends BaseModel
     public function setTelephones(array $telephones)
     {
         $this->telephones = $telephones;
+    }
+
+    public function getLoans(): array
+    {
+        return $this->loans;
+    }
+
+    public function setLoans(array $loans)
+    {
+        $this->loans = $loans;
     }
 }

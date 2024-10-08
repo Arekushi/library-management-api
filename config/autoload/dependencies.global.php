@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Factory\AutoMapperFactory;
 use App\Factory\CustomNotFoundHandlerFactory;
 use App\Factory\CycleORMFactory;
 use App\Factory\DatabaseManagerFactory;
@@ -12,6 +13,7 @@ use App\Factory\MigratorFactory;
 use App\Handler\CustomNotFoundHandler;
 use App\Middleware\ExceptionHandlerMiddleware;
 use App\Middleware\LoggingMiddleware;
+use AutoMapperPlus\AutoMapper;
 use Psr\Log\LoggerInterface;
 
 use Cycle\ORM\ORM;
@@ -49,7 +51,8 @@ return [
             LoggingMiddleware::class => LoggingMiddlewareFactory::class,
             TemplateRendererInterface::class => LaminasViewRendererFactory::class,
             ExceptionHandlerMiddleware::class => ExceptionHandlerMiddlewareFactory::class,
-            CustomNotFoundHandler::class => CustomNotFoundHandlerFactory::class
+            CustomNotFoundHandler::class => CustomNotFoundHandlerFactory::class,
+            AutoMapper::class => AutoMapperFactory::class
         ],
     ]
 ];

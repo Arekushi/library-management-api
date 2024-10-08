@@ -13,9 +13,9 @@ use Library\Swagger\BookHandlerSwagger;
 
 class BookHandler extends BaseHandler implements BookHandlerSwagger
 {
-    public function __construct(BookService $personService)
+    public function __construct(BookService $bookService)
     {
-        $this->service = $personService;
+        $this->service = $bookService;
         $this->routes = [
             'book.get' => [
                 'callback' => [$this, 'get'],

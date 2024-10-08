@@ -2,6 +2,7 @@
 
 namespace Person\Factory;
 
+use AutoMapperPlus\AutoMapper;
 use Cycle\ORM\EntityManager;
 use Cycle\ORM\ORM;
 use Person\Model\Person;
@@ -17,6 +18,8 @@ class PersonServiceFactory
         /** @var ORM $orm */
         $orm = $container->get('orm');
 
+        $mapper = $container->get(AutoMapper::class);
+
         /** @var PersonRepository $personRepository */
         $personRepository = $orm->getRepository(Person::class);
 
@@ -24,6 +27,9 @@ class PersonServiceFactory
         $personRepository->setEntityClass(Person::class);
         $personRepository->logger = $container->get(LoggerInterface::class);
 
-        return new PersonService($personRepository);
+        $personService = new PersonService($personRepository);
+        $personService->setMapper($mapper);
+
+        return $personService;
     }
 }
