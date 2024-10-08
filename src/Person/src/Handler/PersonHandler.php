@@ -9,6 +9,9 @@ use Person\Request\CreatePersonRequest;
 use Person\Request\EditPersonRequest;
 use Person\Response\GetPersonResponse;
 use Person\Service\PersonService;
+use Psr\Http\Message\ServerRequestInterface;
+
+use OpenApi\Attributes as OAT;
 
 class PersonHandler extends BasicHandler
 {
@@ -40,30 +43,49 @@ class PersonHandler extends BasicHandler
         ];
     }
 
-    /**
-     * @OA\Get(path="/person/{id}",
-     *   summary="Obter informações de uma pessoa",
-     *   tags={"Person"},
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     required=true,
-     *     @OA\Schema(
-     *       type="string"
-     *     )
-     *   ),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Returns Person object",
-     *     @OA\MediaType(
-     *         mediaType="application/json",
-     *         @OA\Schema(ref="#/components/schemas/Person"),
-     *     ),
-     *   ),
-     *   @OA\Response(
-     *     response=404,
-     *     description="Person not found"
-     *   )
-     * )
-     */
+    #[OAT\Get(
+        path: '/person/{id}',
+        operationId: 'getPersonById',
+        summary: 'Get person details by id',
+        tags: ['Person'],
+        parameters: [
+            new OAT\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OAT\Schema(type: 'string')
+            )
+        ],
+        responses: [
+            new OAT\Response(
+                response: 200,
+                description: 'Person',
+                content: new OAT\JsonContent(ref: '#/components/schemas/GetPersonResponse'),
+            ),
+        ]
+    )]
+    public function get(ServerRequestInterface $request)
+    {
+        return parent::get($request);
+    }
+
+    public function list(ServerRequestInterface $request)
+    {
+        return parent::list($request);
+    }
+
+    public function create(ServerRequestInterface $request)
+    {
+        return parent::create($request);
+    }
+
+    public function delete(ServerRequestInterface $request)
+    {
+        return parent::delete($request);
+    }
+
+    public function edit(ServerRequestInterface $request)
+    {
+        return parent::edit($request);
+    }
 }

@@ -26,7 +26,7 @@ abstract class BasicHandler implements RequestHandlerInterface
 
     protected $service;
 
-    #[JsonBodyValidatorAspect(method: 'validate')]
+    #[JsonBodyValidatorAspect()]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $route = $this->getRoute($request);

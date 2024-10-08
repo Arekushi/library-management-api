@@ -5,43 +5,32 @@ namespace Person\Model;
 use App\Abstract\BasicModel;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
+use Cycle\ORM\Entity\Behavior\Hook;
 use Person\Repository\PersonRepository;
-
 use Cycle\ORM\Entity\Behavior\Event\Mapper\Command;
-use Cycle\ORM\Entity\Behavior;
+use OpenApi\Attributes as OAT;
 
-/**
- *@OA\Schema(
- *  schema="Person",
- *  @OA\Property(
- *     property="name",
- *     type="string",
- *     description="Name of person"
- *  ),
- *  @OA\Property(
- *     property="email",
- *     type="string",
- *     description="Email of person"
- *  )
- *)
- */
 #[Entity(
     table: 'person',
     role: 'person',
     repository: PersonRepository::class
 )]
-#[Behavior\Hook(
+#[Hook(
     callable: [BasicModel::class, 'onCreate'],
     events: Command\OnCreate::class
 )]
-#[Behavior\Hook(
+#[Hook(
     callable: [BasicModel::class, 'onUpdate'],
     events: Command\OnUpdate::class
 )]
-class Person extends BasicModel {
+#[OAT\Schema(schema: 'Person')]
+class Person extends BasicModel
+{
+    #[OAT\Property(type: 'string')]
     #[Column(type: "string", length: 255)]
     protected $name;
 
+    #[OAT\Property(type: 'string')]
     #[Column(type: "string", length: 255)]
     protected $email;
 

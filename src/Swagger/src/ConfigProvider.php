@@ -7,21 +7,21 @@ namespace Swagger;
 use Genxoft\SwaggerPhpModule\Handler\JsonAction;
 use Genxoft\SwaggerPhpModule\Handler\UiAction;
 
-/**
- * @OA\Info(
- *   version="1.0",
- *   title="Library Management API",
- *   description="A simple Rest API in Laminas Mezzio that manages book loans.",
- *   @OA\Contact(
- *     name="Alexandre Lima",
- *     email="alexandre.ferreira1445@gmail.com",
- *   ),
- * ),
- * @OA\Server(
- *   url="http://127.0.0.1:8080",
- *   description="local server",
- * )
- */
+use OpenApi\Attributes as OAT;
+
+#[OAT\Info(
+    version: '1.0',
+    title: 'Library Management API',
+    description: 'A simple Rest API in Laminas Mezzio that manages book loans.',
+    contact: new OAT\Contact(
+        name: 'Alexandre Lima',
+        email: 'alexandre.ferreira1445@gmail.com'
+    )
+)]
+#[OAT\Server(
+    url: 'http://127.0.0.1:8080',
+    description: 'local server'
+)]
 class ConfigProvider
 {
     public function __invoke(): array

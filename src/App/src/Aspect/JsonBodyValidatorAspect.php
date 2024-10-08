@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Validation;
 #[Aspect]
 class JsonBodyValidatorAspect
 {
+    public function __construct() { }
+
     #[Before]
     public function validate(BeforeMethodInvocation $invocation)
     {

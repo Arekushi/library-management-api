@@ -93,8 +93,15 @@
         "post-create-project-cmd": [
             "@development-enable"
         ],
-        "post-install-cmd": "@clear-config-cache",
-        "post-update-cmd": "@clear-config-cache",
+        "edit-lines": "php bin/file-line-editor.php",
+        "post-install-cmd": [
+            "@clear-config-cache",
+            "@edit-lines"
+        ],
+        "post-update-cmd": [
+            "@clear-config-cache",
+            "@edit-lines"
+        ],
         "development-disable": "laminas-development-mode disable",
         "development-enable": "laminas-development-mode enable",
         "development-status": "laminas-development-mode status",
