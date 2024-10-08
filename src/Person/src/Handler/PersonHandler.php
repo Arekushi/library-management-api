@@ -35,8 +35,13 @@ class PersonHandler extends BaseHandler implements PersonHandlerSwagger
             'person.delete' => [
                 'callback' => [$this, 'delete']
             ],
-            'person.edit' => [
-                'callback' => [$this, 'edit'],
+            'person.put' => [
+                'callback' => [$this, 'put'],
+                'requestClass' => CreatePersonRequest::class,
+                'responseClass' => GetPersonResponse::class
+            ],
+            'person.patch' => [
+                'callback' => [$this, 'patch'],
                 'requestClass' => EditPersonRequest::class,
                 'responseClass' => GetPersonResponse::class
             ]

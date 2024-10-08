@@ -2,11 +2,14 @@
 
 namespace App\Utils;
 
+use InvalidArgumentException;
+use ReflectionClass;
+
 class GenericMapper
 {
     public static function map(array $data, string $className): object
     {
-        $reflection = new \ReflectionClass($className);
+        $reflection = new ReflectionClass($className);
         $constructor = $reflection->getConstructor();
         $params = $constructor ? $constructor->getParameters() : [];
 
@@ -19,7 +22,7 @@ class GenericMapper
             } elseif ($param->isDefaultValueAvailable()) {
                 $args[] = $param->getDefaultValue();
             } else {
-                throw new \InvalidArgumentException("Missing required parameter: {$paramName}");
+                throw new InvalidArgumentException("Missing required parameter: {$paramName}");
             }
         }
 

@@ -57,10 +57,16 @@ class ConfigProvider
                 'allowed_methods' => ['DELETE']
             ],
             [
-                'name' => 'person.edit',
+                'name' => 'person.patch',
                 'path' => '/person/{id}',
                 'middleware' => PersonHandler::class,
                 'allowed_methods' => ['PATCH']
+            ],
+            [
+                'name' => 'person.put',
+                'path' => '/person/{id}',
+                'middleware' => PersonHandler::class,
+                'allowed_methods' => ['PUT']
             ]
         ];
     }

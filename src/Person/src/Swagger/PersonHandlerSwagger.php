@@ -105,7 +105,43 @@ interface PersonHandlerSwagger
 
     #[OAT\Put(
         path: '/person/{id}',
-        operationId: 'editPerson',
+        operationId: 'putPerson',
+        summary: 'Update the details of an existing person record identified by their unique identifier',
+        tags: ['Person'],
+        parameters: [
+            new OAT\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OAT\Schema(type: 'string')
+            )
+        ],
+        requestBody: new OAT\RequestBody(
+            required: true,
+            content: new OAT\JsonContent(ref: '#/components/schemas/CreatePersonRequest')
+        ),
+        responses: [
+            new OAT\Response(
+                response: 200,
+                description: 'Successfully updated the person record',
+                content: new OAT\JsonContent(ref: '#/components/schemas/GetPersonResponse')
+            ),
+            new OAT\Response(
+                response: 404,
+                description: 'The specified person could not be found for update'
+            ),
+            new OAT\Response(
+                response: 400,
+                description: 'Invalid request payload; please check the JSON body format',
+                content: new OAT\JsonContent(ref: '#/components/schemas/ExceptionResponse')
+            )
+        ]
+    )]
+    public function put(Route $route, ServerRequestInterface $request);
+
+    #[OAT\Patch(
+        path: '/person/{id}',
+        operationId: 'patchPerson',
         summary: 'Update the details of an existing person record identified by their unique identifier',
         tags: ['Person'],
         parameters: [
@@ -137,5 +173,5 @@ interface PersonHandlerSwagger
             )
         ]
     )]
-    public function edit(Route $route, ServerRequestInterface $request);
+    public function patch(Route $route, ServerRequestInterface $request);
 }

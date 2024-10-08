@@ -3,8 +3,10 @@
 namespace Person\Model;
 
 use App\Abstract\BaseModel;
+use App\Attribute\RelatedCollection;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Relation\HasMany;
 use Cycle\ORM\Entity\Behavior\Hook;
 use Person\Repository\PersonRepository;
 use Cycle\ORM\Entity\Behavior\Event\Mapper\Command;
@@ -34,6 +36,13 @@ class Person extends BaseModel
     #[Column(type: "string", length: 255)]
     protected $email;
 
+    #[OAT\Property(type: 'array', items: new OAT\Items(ref: '#/components/schemas/Telephone'))]
+    #[HasMany(target: Telephone::class)]
+    #[RelatedCollection(
+        Telephone::class
+    )]
+    protected array $telephones = [];
+
     public function getName(): string
     {
         return $this->name;
@@ -52,5 +61,15 @@ class Person extends BaseModel
     public function setEmail(string $email): void
     {
         $this->email = $email;
+    }
+
+    public function getTelephones(): array
+    {
+        return $this->telephones;
+    }
+
+    public function setTelephones(array $telephones)
+    {
+        $this->telephones = $telephones;
     }
 }

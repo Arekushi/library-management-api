@@ -4,6 +4,7 @@ namespace App\Abstract;
 
 use App\Exception\NotFoundException;
 use App\Utils\HydratorMapper;
+use App\Utils\Merger;
 use Laminas\Hydrator\ClassMethodsHydrator;
 
 abstract class BaseService
@@ -51,7 +52,7 @@ abstract class BaseService
         return $obj;
     }
 
-    public function edit($id, $request)
+    public function edit($id, $request, $replace = false)
     {
         $oldObj = $this->repository->getById($id);
 
@@ -60,9 +61,14 @@ abstract class BaseService
             throw new NotFoundException();
         }
 
-        $newObj = HydratorMapper::merge($oldObj, $request);
-        $this->repository->editOne($newObj);
+        $newObj = Merger::merge(
+            $oldObj,
+            $request,
+            ignoreProperties: ['uuid'],
+            replace: $replace
+        );
 
+        $this->repository->editOne($newObj);
         return $newObj;
     }
 }

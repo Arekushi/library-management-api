@@ -2,11 +2,12 @@
 
 namespace App\Utils;
 
-use Exception;
+use App\Attribute\RelatedCollection;
 use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Hydrator\ReflectionHydrator;
 use ReflectionClass;
+use ReflectionProperty;
 
 class HydratorMapper
 {
@@ -27,15 +28,33 @@ class HydratorMapper
             throw new \InvalidArgumentException("O dado fornecido deve ser um array ou um objeto.");
         }
 
-        $classInstance = new $class();
-
-        // Verificar se o $hydratorClass implementa a interface HydratorInterface
         if (!in_array(HydratorInterface::class, class_implements($hydratorClass))) {
             throw new \InvalidArgumentException("O hydrator fornecido não implementa HydratorInterface.");
         }
 
+        $classInstance = new $class();
         $hydrator = new $hydratorClass();
-        $hydrator->hydrate($data, $classInstance);
+
+        // Iterar sobre cada campo da classe
+        foreach ($data as $key => $value) {
+            $reflectionClass = new ReflectionClass($class);
+
+            if (!$reflectionClass->hasProperty($key)) {
+                continue;
+            }
+
+            if (is_array($value) && self::isListOfObjects($class, $key)) {
+                $relatedClass = self::getRelatedClass($class, $key)->getRelatedClass();
+                $mappedItems = array_map(
+                    fn($item) => self::map($item, $relatedClass, $hydratorClass),
+                    $value
+                );
+
+                self::addItemsToCollection($classInstance, $key, $mappedItems);
+            } else {
+                $hydrator->hydrate([$key => $value], $classInstance);
+            }
+        }
 
         return $classInstance;
     }
@@ -54,31 +73,6 @@ class HydratorMapper
         return $mappedList;
     }
 
-    public static function merge(
-        $oldObj,
-        $newData,
-        string $hydratorClass = ClassMethodsHydrator::class
-    )
-    {
-        if (!class_exists($hydratorClass) || !in_array(HydratorInterface::class, class_implements($hydratorClass))) {
-            throw new Exception("O hydrator '$hydratorClass' não é válido ou não implementa HydratorInterface.");
-        }
-
-        $hydrator = new $hydratorClass();
-
-        $oldData = $hydrator->extract($oldObj);
-        $newData = (array)$newData;
-
-        // Faz o merge dos dados
-        foreach ($newData as $key => $value) {
-            if ($value !== null) {
-                $oldData[$key] = $value;
-            }
-        }
-
-        return $hydrator->hydrate($oldData, $oldObj);
-    }
-
     private static function extractProperties(object $object): array
     {
         $reflection = new ReflectionClass($object);
@@ -90,5 +84,66 @@ class HydratorMapper
         }
 
         return $properties;
+    }
+
+    private static function getRelatedClass(string $class, string $property): RelatedCollection
+    {
+        $reflectionClass = new ReflectionClass($class);
+
+        if (!$reflectionClass->hasProperty($property)) {
+            throw new \InvalidArgumentException("A propriedade {$property} não existe na classe {$class}.");
+        }
+
+        /** @var ReflectionProperty $reflectedProperty */
+        $reflectedProperty = $reflectionClass->getProperty($property);
+
+        $attributes = $reflectedProperty->getAttributes(RelatedCollection::class);
+
+        if (!empty($attributes)) {
+            return $attributes[0]->newInstance();
+        }
+
+        throw new \RuntimeException("A classe relacionada para a propriedade {$property} não pôde ser determinada.");
+    }
+
+    private static function isListOfObjects(string $class, string $property): bool
+    {
+        $reflectionClass = new ReflectionClass($class);
+        if (!$reflectionClass->hasProperty($property)) {
+            throw new \InvalidArgumentException("A propriedade {$property} não existe na classe {$class}.");
+        }
+
+        /** @var ReflectionProperty $reflectedProperty */
+        $reflectedProperty = $reflectionClass->getProperty($property);
+        $propertyType = $reflectedProperty->getType();
+
+        if ($propertyType && $propertyType->getName() === 'array') {
+            $attributes = $reflectedProperty->getAttributes(RelatedCollection::class);
+
+            if (!empty($attributes)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static function addItemsToCollection(object $classInstance, string $property, array $items): void
+    {
+        $mapping = self::getRelatedClass(get_class($classInstance), $property);
+        $getMethod = $mapping->getGetMethod();
+        $setMethod = $mapping->getSetMethod();
+        $hasGetter = method_exists($classInstance, $getMethod);
+        $hasSetter = method_exists($classInstance, $setMethod);
+
+        if ($hasGetter && $hasSetter) {
+            foreach ($items as $item) {
+                $itens = $classInstance->{$getMethod}();
+                $itens[] = $item;
+                $classInstance->{$setMethod}($itens);
+            }
+        } else {
+            throw new \InvalidArgumentException("Método {$getMethod} ou {$setMethod} não existe para a propriedade {$property}.");
+        }
     }
 }

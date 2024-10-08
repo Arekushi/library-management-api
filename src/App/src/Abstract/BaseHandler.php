@@ -81,7 +81,20 @@ abstract class BaseHandler implements RequestHandlerInterface
         return new DeletedSuccessfullyResponse();
     }
 
-    public function edit(Route $route, ServerRequestInterface $request)
+    public function put(Route $route, ServerRequestInterface $request)
+    {
+        $id = $request->getAttribute('id');
+        $data = $request->getParsedBody();
+        $requestClass = $route->getRequestClass();
+        $request = HydratorMapper::map($data, $requestClass);
+
+        $obj = $this->service->edit($id, $data, true);
+        $responseClass = $route->getResponseClass();
+        $response = HydratorMapper::map($obj, $responseClass);
+        return $response;
+    }
+
+    public function patch(Route $route, ServerRequestInterface $request)
     {
         $id = $request->getAttribute('id');
         $data = $request->getParsedBody();
