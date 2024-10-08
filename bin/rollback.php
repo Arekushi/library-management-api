@@ -17,4 +17,4 @@ $migrator = $container->get(MigratorService::class);
 /** @var ORM $orm */
 $orm = $container->get('orm');
 
-$migrator->migrate();
+$migrator->rollback();

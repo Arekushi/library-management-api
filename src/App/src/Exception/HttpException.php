@@ -8,12 +8,12 @@ class HttpException extends Exception
 {
     private int $statusCode;
 
-    private object|array $error;
+    private object|array|null $error;
 
     public function __construct(
         string $message,
         int $statusCode,
-        object|array $error = null,
+        object|array|null $error = null,
         ?Exception $previous = null
     )
     {

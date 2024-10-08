@@ -14,6 +14,7 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
+    \Sirix\Cycle\ConfigProvider::class,
     \Laminas\Hydrator\ConfigProvider::class,
     \Mezzio\Cors\ConfigProvider::class,
     \Mezzio\LaminasView\ConfigProvider::class,
@@ -30,7 +31,6 @@ $aggregator = new ConfigAggregator([
     \Mezzio\Router\ConfigProvider::class,
     \Laminas\Diactoros\ConfigProvider::class,
     ConfigProvider::class,
-
     // Swoole config to overwrite some services (if installed)
     // class_exists(\Mezzio\Swoole\ConfigProvider::class)
     //     ? \Mezzio\Swoole\ConfigProvider::class

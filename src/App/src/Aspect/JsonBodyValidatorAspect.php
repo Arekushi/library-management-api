@@ -4,9 +4,8 @@ namespace App\Aspect;
 
 use App\Abstract\BasicHandler;
 use App\Exception\InvalidJsonBodyException;
+use App\Utils\HydratorMapper;
 use Attribute;
-use Laminas\Hydrator\ReflectionHydrator;
-use Mezzio\Router\RouteResult;
 use Okapi\Aop\Invocation\BeforeMethodInvocation;
 use Okapi\Aop\Attributes\Aspect;
 use Okapi\Aop\Attributes\Before;
@@ -21,27 +20,21 @@ class JsonBodyValidatorAspect
     {
         /** @var BasicHandler $subject */
         $subject = $invocation->getSubject();
-
-        $routes = $subject->getRoutes();
         $request = $invocation->getArgument(0);
 
-        $routeResult = $request->getAttribute(RouteResult::class);
-        $routeName = $routeResult->getMatchedRouteName();
-        $route = $routes[$routeName];
+        $route = $subject->getRoute($request);
 
         if (isset($route['requestClass']) && $route['requestClass'] !== null)
         {
             $requestClass = $route['requestClass'];
             $data = $request->getParsedBody();
-            $requestClassInstance = new $requestClass();
-            $hydrator = new ReflectionHydrator();
-            $hydrator->hydrate($data, $requestClassInstance);
+            $request = HydratorMapper::map($data, $requestClass);
 
             $validator = Validation::createValidatorBuilder()
                 ->enableAttributeMapping()
                 ->getValidator();
 
-            $violations = $validator->validate($requestClassInstance);
+            $violations = $validator->validate($request);
 
             if (count($violations) > 0)
             {

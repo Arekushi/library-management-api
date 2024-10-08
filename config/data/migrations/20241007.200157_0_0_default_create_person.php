@@ -6,7 +6,7 @@ namespace Migration;
 
 use Cycle\Migrations\Migration;
 
-class OrmDefaultD4dcd9004b23f9657f85cc298ff73413 extends Migration
+class OrmDefault4e947c04e015ff8b8b992916762332dd extends Migration
 {
     protected const DATABASE = 'default';
 
@@ -15,7 +15,7 @@ class OrmDefaultD4dcd9004b23f9657f85cc298ff73413 extends Migration
         $this->table('person')
         ->addColumn('name', 'string', ['nullable' => false, 'defaultValue' => null, 'length' => 255, 'size' => 255])
         ->addColumn('email', 'string', ['nullable' => false, 'defaultValue' => null, 'length' => 255, 'size' => 255])
-        ->addColumn('id', 'integer', ['nullable' => false, 'defaultValue' => null, 'autoincrement' => true])
+        ->addColumn('id', 'uuid', ['nullable' => false, 'defaultValue' => null, 'field' => 'id'])
         ->addColumn('created_at', 'datetime', ['nullable' => false, 'defaultValue' => null, 'withTimezone' => false])
         ->addColumn('updated_at', 'datetime', ['nullable' => true, 'defaultValue' => null, 'withTimezone' => false])
         ->setPrimaryKeys(['id'])

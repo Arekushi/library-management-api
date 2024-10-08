@@ -4,42 +4,71 @@ namespace App\Abstract;
 
 use Cycle\ORM\Select\Repository;
 use Cycle\Schema\Definition\Entity;
-use Cycle\ORM\EntityManager;
+use Cycle\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
-class BasicRepository extends Repository {
+abstract class BasicRepository extends Repository
+{
 
-    private EntityManager $entityManager;
+    protected EntityManagerInterface $entityManager;
+
+    protected string $entityClass;
+
+    public LoggerInterface $logger;
 
     public function setEntityManager($entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-	public function getFirst() : ?Entity {
-		return $this->select()->orderBy('created_at')->limit(1)->fetchOne();
-	}
-
-	public function getLast() : ?Entity {
-		return $this->select()->orderBy('created_at', 'DESC')->limit(1)->fetchOne();
-	}
-
-    public function findById($id)
+    public function setEntityClass($entityClass)
     {
-        $user = $this->select()->where(['id' => $id])->fetchOne();
-        return $user;
+        $this->entityClass = $entityClass;
     }
 
-    public function fetchAll()
+    public function getEntityClass()
     {
-        $users = $this->select()->findAll();
-        return $users;
+        return $this->entityClass;
     }
 
-    public function createOne($objRequest)
+    public function getFirst(): ?Entity
     {
-        $user = $this->entityManager->persist($objRequest);
+        return $this->select()->orderBy('created_at')->limit(1)->fetchOne();
+    }
+
+    public function getLast(): ?Entity
+    {
+        return $this->select()->orderBy('created_at', 'DESC')->limit(1)->fetchOne();
+    }
+
+    public function getById($id)
+    {
+        $obj = $this->select()->where(['uuid' => $id])->fetchOne();
+        return $obj;
+    }
+
+    public function getAll()
+    {
+        $all = $this->select()->fetchAll();
+        return $all;
+    }
+
+    public function createOne($obj)
+    {
+        $this->entityManager->persist($obj);
         $this->entityManager->run();
+        return $obj;
+    }
 
-        return $user;
+    public function deleteOne($obj)
+    {
+        $this->entityManager->delete($obj);
+        $this->entityManager->run();
+    }
+
+    public function editOne($obj)
+    {
+        $this->entityManager->persist($obj);
+        $this->entityManager->run();
     }
 }

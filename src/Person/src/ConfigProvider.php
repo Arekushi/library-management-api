@@ -24,7 +24,7 @@ class ConfigProvider
         return [
             'factories' => [
                 PersonService::class => PersonServiceFactory::class,
-                PersonHandler::class => PersonHandlerFactory::class,
+                PersonHandler::class => PersonHandlerFactory::class
             ],
         ];
     }
@@ -39,10 +39,28 @@ class ConfigProvider
                 'allowed_methods' => ['GET'],
             ],
             [
+                'name' => 'person.list',
+                'path' => '/person',
+                'middleware' => PersonHandler::class,
+                'allowed_methods' => ['GET'],
+            ],
+            [
                 'name' => 'person.create',
                 'path' => '/person',
                 'middleware' => PersonHandler::class,
                 'allowed_methods' => ['POST']
+            ],
+            [
+                'name' => 'person.delete',
+                'path' => '/person/{id}',
+                'middleware' => PersonHandler::class,
+                'allowed_methods' => ['DELETE']
+            ],
+            [
+                'name' => 'person.edit',
+                'path' => '/person/{id}',
+                'middleware' => PersonHandler::class,
+                'allowed_methods' => ['PATCH']
             ]
         ];
     }

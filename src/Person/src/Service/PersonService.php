@@ -7,8 +7,6 @@ use Person\Repository\PersonRepository;
 
 class PersonService extends BasicService
 {
-    // protected PersonRepository $repository;
-
     public function __construct(PersonRepository $repository)
     {
         $this->repository = $repository;

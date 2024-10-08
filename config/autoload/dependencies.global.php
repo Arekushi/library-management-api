@@ -17,6 +17,8 @@ use Psr\Log\LoggerInterface;
 use Cycle\ORM\ORM;
 use Cycle\Database\DatabaseManager;
 use Cycle\Migrations\Migrator;
+use Cycle\ORM\Entity\Behavior\EventDrivenCommandGenerator;
+use Cycle\ORM\Transaction\CommandGeneratorInterface;
 use Mezzio\LaminasView\LaminasViewRendererFactory;
 use Mezzio\Template\TemplateRendererInterface;
 
@@ -45,9 +47,6 @@ return [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             LoggerInterface::class => LoggerFactory::class,
             LoggingMiddleware::class => LoggingMiddlewareFactory::class,
-            DatabaseManager::class => DatabaseManagerFactory::class,
-            ORM::class => CycleORMFactory::class,
-            Migrator::class => MigratorFactory::class,
             TemplateRendererInterface::class => LaminasViewRendererFactory::class,
             ExceptionHandlerMiddleware::class => ExceptionHandlerMiddlewareFactory::class,
             CustomNotFoundHandler::class => CustomNotFoundHandlerFactory::class

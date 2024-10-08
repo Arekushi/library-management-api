@@ -3,19 +3,16 @@
 namespace App\Abstract;
 
 use Cycle\Annotated\Annotation\Column;
-use Cycle\ORM\Entity\Behavior;
+use Cycle\ORM\Entity\Behavior\Event\Mapper\Command;
 use DateTimeImmutable;
+use ReflectionClass;
+use Ramsey\Uuid\Uuid;
+use Throwable;
 
-#[Behavior\CreatedAt(
-    column: 'created_at'
-)]
-#[Behavior\UpdatedAt(
-    column: 'updated_at'
-)]
-class BasicModel
+abstract class BasicModel
 {
-    #[Column(type: 'integer', primary: true, autoincrement: true)]
-    protected int $id;
+    #[Column(type: 'string', primary: true)]
+    protected string $uuid;
 
     #[Column(type: 'datetime')]
     protected DateTimeImmutable $createdAt;
@@ -23,9 +20,21 @@ class BasicModel
     #[Column(type: 'datetime', nullable: true)]
     protected ?DateTimeImmutable $updatedAt = null;
 
-    public function getId(): int
+    public static function onCreate(Command\OnCreate $event): void
     {
-        return $this->id;
+        $event->state->register('uuid', Uuid::uuid4()->toString());
+        $event->state->register('createdAt', new DateTimeImmutable());
+        $event->state->register('updatedAt', new DateTimeImmutable());
+    }
+
+    public static function onUpdate(Command\OnUpdate $event): void
+    {
+        $event->state->register('updatedAt', new DateTimeImmutable());
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 
     public function getCreatedAt(): DateTimeImmutable
@@ -36,5 +45,27 @@ class BasicModel
     public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
+    }
+
+    public function __toString(): string
+    {
+        $reflection = new ReflectionClass($this);
+        $properties = $reflection->getProperties();
+        $output = [];
+
+        foreach ($properties as $property) {
+            try {
+                $property->setAccessible(true);
+                $name = $property->getName();
+                $value = $property->getValue($this);
+                $output[] = "$name: $value";
+            } catch(Throwable $e) {
+                $name = $property->getName();
+                $value = null;
+                $output[] = "$name: $value";
+            }
+        }
+
+        return implode(", ", $output);
     }
 }

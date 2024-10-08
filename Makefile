@@ -8,4 +8,7 @@ dump:
 	composer dump-autoload
 
 migrate:
-	composer run migrate
+	php bin/migrate.php
+
+rollback:
+	php bin/rollback.php
