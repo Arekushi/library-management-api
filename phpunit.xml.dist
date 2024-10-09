@@ -13,10 +13,15 @@
     colors="true"
 >
     <testsuites>
-        <testsuite name="default">
-            <directory>./test</directory>
+        <testsuite name="Person">
+            <directory>./src/Person/test</directory>
+        </testsuite>
+
+        <testsuite name="Library">
+            <directory>./src/Library/test</directory>
         </testsuite>
     </testsuites>
+
 
     <source>
         <include>
