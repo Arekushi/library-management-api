@@ -48,6 +48,8 @@ To test the project, some prerequisites are necessary.
     ```sh
     docker-compose up -d --build
     ```
+    > Wait until the migrations are completed and Apache is initialized.
+    ![Docker example](https://i.imgur.com/nHx3U1K.png)
 3. Everything is set, the application is up and running 🎉
 4. Run this command in the terminal to perform **UNIT TESTS**
     ```sh
