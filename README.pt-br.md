@@ -47,12 +47,13 @@ Para testar o projeto, alguns pré-requisitos são necessários.
     ```
 2. Rode este comando no terminal
     ```sh
-    ...
+    docker-compose up -d --build
     ```
 3. Tudo certo, a aplicação já está no ar 🎉
-
-## 🎥 Video explicativo
-> Fiz um vídeo de 10 minutos explicando sobre o projeto e demonstrando ele funcionando
+4. Rode este comando no terminal para realizer os testes **UNITÁRIOS**
+    ```sh
+    composer run test
+    ```
 
 ## 📑 Swagger
 Você pode ver todas as rotas indo para o endpoint: [`http://127.0.0.1:8080/api`](http://127.0.0.1:8080/api)
@@ -82,6 +83,32 @@ A entidade `telephone` realmente não precisava existir, mas usei ela para testa
 A entidade `book` também está bem simples, não havendo nada de especial.
 
 A entidade `loan` sinto que poderia ser mais complexa, podendo manejar o empréstimos de N livros de uma só vez, mas dessa forma funciona para o propósito do exercício.
+
+## 📦 Diretórios relevantes
+Aqui deixarei alguns diretórios e arquivos que podem ajudar na análise
+
+* src/Abstract/
+    * [BaseHandler.php](https://github.com/Arekushi/library-management-api/blob/main/src/App/src/Abstract/BaseHandler.php)
+    * [BaseModel.php](https://github.com/Arekushi/library-management-api/blob/main/src/App/src/Abstract/BaseModel.php)
+    * [BaseRepository.php](https://github.com/Arekushi/library-management-api/blob/main/src/App/src/Abstract/BaseRepository.php)
+    * [BaseService.php](https://github.com/Arekushi/library-management-api/blob/main/src/App/src/Abstract/BaseService.php)
+* src/Aspect/
+    * [JsonBodyValidatorAspect.php](https://github.com/Arekushi/library-management-api/blob/main/src/App/src/Aspect/JsonBodyValidatorAspect.php)
+* src/Person/src/
+    * Model/
+        * [Person.php](https://github.com/Arekushi/library-management-api/blob/main/src/Person/src/Model/Person.php)
+        * [Telephone.php](https://github.com/Arekushi/library-management-api/blob/main/src/Person/src/Model/Telephone.php)
+* src/Library/src
+    * Model/
+        * [Book.php](https://github.com/Arekushi/library-management-api/blob/main/src/Library/src/Model/Book.php)
+        * [Loan.php](https://github.com/Arekushi/library-management-api/blob/main/src/Library/src/Model/Loan.php)
+    * Handler/
+        * [LoanHandler.php](https://github.com/Arekushi/library-management-api/blob/main/src/Library/src/Handler/LoanHandler.php)
+    * Service/
+        * [LoanService.php](https://github.com/Arekushi/library-management-api/blob/main/src/Library/src/Service/LoanService.php)
+    * Repository/
+        * [LoanRepository.php](https://github.com/Arekushi/library-management-api/blob/main/src/Library/src/Repository/LoanRepository.php)
+
 
 ## 🤔 Por que Laminas Mezzio?
 Ao me deparar com o desafio sendo em PHP,  eu sabia que precisaria de um framework robusto para lidar com as requisições, nisso inicialmente pensei no [Laravel][laravel], que é bem popular, bastante  robusto e fácil de usar, mas como o desafio era em PHP, além disso, na descrição da vaga específicava que seria interessante conhecimento em [Zend Framework][zendframework]/[Laminas Mezzio][laminas_mezzio], tentei me aventurar nesse framework para este projeto.
@@ -185,11 +212,9 @@ Aqui está um [link][acknowledgments] de uma página no Notion, onde estão mate
 [swagger_fork]: https://github.com/Arekushi/php-swagger-module
 [aop_url]: https://en.wikipedia.org/wiki/Aspect-oriented_programming
 [emojigit]: https://gitmoji.dev/
-[docker_url]: a
-[docker_tutorial_windows]: a
-[docker_tutorial_linux]: a
-
-
+[docker_url]: https://www.docker.com/products/docker-desktop/
+[docker_tutorial_windows]: https://www.simplilearn.com/tutorials/docker-tutorial/install-docker-on-windows
+[docker_tutorial_linux]: https://www.chakray.com/complete-guide-to-installing-docker-in-linux-simple-steps-and-useful-tips/
 [acknowledgments]: https://arekushi.notion.site/Acknowledgements-1149471ad92280b68520df4db368e0df?pvs=4
 
 <!-- [Constributors] -->
